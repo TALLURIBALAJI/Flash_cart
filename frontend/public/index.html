@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash-Cart — Smart Expense Splitting</title>
+    <meta name="description" content="Flash-Cart is a premium expense splitting app for groups, trips, and friends. Better than PhonePe Split.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="auth-container">
+            <div class="auth-brand">
+                <div class="auth-logo">⚡</div>
+                <h1 class="auth-title">Flash-Cart</h1>
+                <p class="auth-tagline">Smart expense splitting for groups, trips & friends</p>
+            </div>
+            <div class="auth-card" id="auth-card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login" id="tab-login">Sign In</button>
+                    <button class="auth-tab" data-tab="register" id="tab-register">Sign Up</button>
+                </div>
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full" id="login-btn">Sign In</button>
+                </form>
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="reg-username">Username</label>
+                        <input type="text" id="reg-username" placeholder="yourname" required minlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Min 6 characters" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary btn-full" id="register-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Shell (hidden until login) -->
+    <div id="app-shell" class="app-shell" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">⚡</div>
+                <h1 class="logo-text">Flash-Cart</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard" id="nav-dashboard">
+                    <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-view="groups" id="nav-groups">
+                    <span class="nav-icon">👥</span><span class="nav-label">Groups</span>
+                </a>
+                <a href="#" class="nav-item" data-view="add-expense" id="nav-add-expense">
+                    <span class="nav-icon">➕</span><span class="nav-label">Add Expense</span>
+                </a>
+                <a href="#" class="nav-item" data-view="settle" id="nav-settle">
+                    <span class="nav-icon">💸</span><span class="nav-label">Settle Up</span>
+                </a>
+                <a href="#" class="nav-item" data-view="activity" id="nav-activity">
+                    <span class="nav-icon">📋</span><span class="nav-label">Activity</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-profile">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-info">
+                        <span class="user-name" id="sidebar-username">User</span>
+                        <span class="user-email" id="sidebar-email">user@email.com</span>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logout-btn" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header" id="mobile-header">
+            <button class="hamburger" id="menu-toggle">☰</button>
+            <span class="mobile-logo">⚡ Flash-Cart</span>
+            <button class="btn-logout-mobile" id="logout-btn-mobile">🚪</button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <div id="toast-container" class="toast-container"></div>
+
+            <!-- Dashboard View -->
+            <section id="dashboard-view" class="view active">
+                <header class="view-header">
+                    <div>
+                        <h2>Dashboard</h2>
+                        <p class="view-subtitle">Your expense overview at a glance</p>
+                    </div>
+                </header>
+                <div class="metrics-grid" id="metrics-grid">
+                    <div class="metric-card card-owe"><div class="metric-icon">📤</div><div class="metric-body"><div class="metric-label">You Owe</div><div class="metric-value negative" id="total-owes">₹0.00</div></div></div>
+                    <div class="metric-card card-owed"><div class="metric-icon">📥</div><div class="metric-body"><div class="metric-label">You Are Owed</div><div class="metric-value positive" id="total-owed">₹0.00</div></div></div>
+                    <div class="metric-card card-net"><div class="metric-icon">⚖️</div><div class="metric-body"><div class="metric-label">Net Balance</div><div class="metric-value" id="net-balance">₹0.00</div></div></div>
+                    <div class="metric-card card-groups"><div class="metric-icon">👥</div><div class="metric-body"><div class="metric-label">Groups</div><div class="metric-value neutral" id="active-groups">0</div></div></div>
+                </div>
+                <!-- Category Breakdown -->
+                <div class="dashboard-grid">
+                    <div class="card" id="category-card">
+                        <h3 class="card-title">Spending by Category</h3>
+                        <div id="category-breakdown" class="category-list"><p class="empty-text">No expenses yet</p></div>
+                    </div>
+                    <div class="card" id="recent-card">
+                        <div class="card-header"><h3 class="card-title">Recent Activity</h3></div>
+                        <div id="recent-expenses" class="activity-list"><p class="empty-text">No expenses yet. Create a group to start!</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Groups View -->
+            <section id="groups-view" class="view">
+                <header class="view-header">
+                    <div><h2>Groups</h2><p class="view-subtitle">Manage your shared expense groups</p></div>
+                    <button class="btn-primary" id="create-group-btn">+ New Group</button>
+                </header>
+                <div class="groups-grid" id="groups-grid">
+                    <div class="empty-state"><div class="empty-icon">👥</div><h3>No groups yet</h3><p>Create a group to start splitting expenses</p></div>
+                </div>
+            </section>
+
+            <!-- Add Expense View -->
+            <section id="add-expense-view" class="view">
+                <header class="view-header"><div><h2>Add Expense</h2><p class="view-subtitle">Log and split a new expense</p></div></header>
+                <div class="form-card">
+                    <form id="add-expense-form">
+                        <div class="form-row">
+                            <div class="form-group"><label for="expense-group">Group</label><select id="expense-group" required><option value="">Select group</option></select></div>
+                            <div class="form-group"><label for="expense-category">Category</label><select id="expense-category"><option value="OTHER">📦 Other</option></select></div>
+                        </div>
+                        <div class="form-group"><label for="expense-description">Description</label><input type="text" id="expense-description" placeholder="e.g., Dinner at restaurant" required></div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="expense-amount">Amount (₹)</label><input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="expense-payer">Paid by</label><select id="expense-payer" required><option value="">Select payer</option></select></div>
+                        </div>
+                        <div class="form-group"><label for="expense-notes">Notes (optional)</label><textarea id="expense-notes" placeholder="Add any notes..." rows="2"></textarea></div>
+                        <div class="form-group"><label>Split Type</label>
+                            <div class="split-type-selector" id="split-type-selector">
+                                <button type="button" class="split-btn active" data-split="EQUAL">Equal</button>
+                                <button type="button" class="split-btn" data-split="EXACT">Exact</button>
+                                <button type="button" class="split-btn" data-split="PERCENTAGE">Percent</button>
+                                <button type="button" class="split-btn" data-split="RATIO">Ratio</button>
+                            </div>
+                        </div>
+                        <fieldset class="form-fieldset"><legend>Split among</legend><div id="expense-splits-container" class="splits-container"></div></fieldset>
+                        <div class="form-actions"><button type="submit" class="btn-primary btn-full">Add Expense</button></div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Settle Up View -->
+            <section id="settle-view" class="view">
+                <header class="view-header"><div><h2>Settle Up</h2><p class="view-subtitle">View and record payments</p></div></header>
+                <div id="settlement-details" class="settlements-list">
+                    <div class="empty-state"><div class="empty-icon">✅</div><h3>All settled!</h3><p>No outstanding debts</p></div>
+                </div>
+            </section>
+
+            <!-- Activity View -->
+            <section id="activity-view" class="view">
+                <header class="view-header"><div><h2>Activity</h2><p class="view-subtitle">Full expense history</p></div></header>
+                <div id="activity-feed" class="activity-feed">
+                    <div class="empty-state"><div class="empty-icon">📋</div><h3>No activity yet</h3><p>Expenses will appear here</p></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Group Modal -->
+    <div id="group-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Create New Group</h3><button class="modal-close" aria-label="Close">&times;</button></div>
+            <form id="create-group-form">
+                <div class="form-group"><label for="group-name">Group Name</label><input type="text" id="group-name" placeholder="e.g., Weekend Trip" required></div>
+                <div class="form-group"><label for="group-description">Description</label><input type="text" id="group-description" placeholder="Optional description"></div>
+                <div class="form-group"><label for="group-type">Type</label><select id="group-type">
+                    <option value="OTHER">📁 Other</option><option value="TRIP">✈️ Trip</option><option value="HOME">🏠 Home</option>
+                    <option value="COUPLE">💑 Couple</option><option value="FRIENDS">👯 Friends</option><option value="WORK">💼 Work</option>
+                </select></div>
+                <div class="form-group"><label>Members (comma-separated emails)</label><textarea id="group-members" placeholder="alice@email.com, bob@email.com" required></textarea></div>
+                <div class="modal-actions"><button type="submit" class="btn-primary">Create</button><button type="button" class="btn-secondary modal-cancel">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Record Payment</h3><button class="modal-close" aria-label="Close">&times;</button></div>
+            <form id="payment-form">
+                <input type="hidden" id="pay-payer-id"><input type="hidden" id="pay-receiver-id"><input type="hidden" id="pay-group-id">
+                <div class="payment-summary" id="payment-summary"></div>
+                <div class="form-group"><label for="pay-amount">Amount (₹)</label><input type="number" id="pay-amount" step="0.01" min="0.01" required></div>
+                <div class="form-group"><label for="pay-note">Note</label><input type="text" id="pay-note" placeholder="Optional note"></div>
+                <div class="modal-actions"><button type="submit" class="btn-primary">Record Payment</button><button type="button" class="btn-secondary modal-cancel">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
