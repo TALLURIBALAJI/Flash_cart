@@ -3,9 +3,12 @@
  * JWT Authentication, Categories, Split Types, Settlement Recording
  */
 
-const API = window.location.hostname === 'localhost'
+// Set your production backend URL here once you deploy the Spring Boot app (e.g., to Railway or Render)
+const PROD_BACKEND_URL = 'https://your-backend-app.up.railway.app'; 
+
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8080/api'
-    : `${window.location.origin}/api`;
+    : `${PROD_BACKEND_URL}/api`;
 
 const state = {
     token: localStorage.getItem('fc_token'),
