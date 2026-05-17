@@ -17,6 +17,10 @@ services:
         value: "<set-in-render>"
       - key: CORS_ALLOWED_ORIGINS
         value: "https://flashcart-frontend.onrender.com"
+      - key: DB_DRIVER
+        value: "org.postgresql.Driver"
+      - key: JPA_DIALECT
+        value: "org.hibernate.dialect.PostgreSQLDialect"
     branch: main
     region: oregon
     autoDeploy: true

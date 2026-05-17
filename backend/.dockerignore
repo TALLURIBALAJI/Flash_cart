@@ -1,0 +1,13 @@
+target
+.mvn
+mvnw
+.git
+.gitignore
+frontend
+node_modules
+*.log
+*.tmp
+*.swp
+*.class
+**/test-classes
+**/surefire-reports
