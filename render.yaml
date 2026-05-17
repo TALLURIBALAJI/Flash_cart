@@ -2,6 +2,7 @@ services:
   - type: postgres
     name: flashcart-db
     plan: free
+    region: oregon
     databaseName: flash_cart_db
 
   - type: web_service
@@ -17,8 +18,12 @@ services:
       - key: CORS_ALLOWED_ORIGINS
         value: "https://flashcart-frontend.onrender.com"
     branch: main
+    region: oregon
+    autoDeploy: true
 
   - type: static_site
     name: flashcart-frontend
     staticPublishPath: frontend/public
     branch: main
+    region: oregon
+    autoDeploy: true
