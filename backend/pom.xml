@@ -97,6 +97,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Boot Actuator for health checks / metrics -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- H2 Database for local development & testing -->
         <dependency>
             <groupId>com.h2database</groupId>

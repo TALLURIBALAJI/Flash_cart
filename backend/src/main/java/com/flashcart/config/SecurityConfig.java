@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/categories").permitAll()
                 .requestMatchers("/api/group-types").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/actuator/health").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
