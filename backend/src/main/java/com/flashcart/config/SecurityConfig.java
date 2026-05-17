@@ -55,14 +55,19 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:3000",
-            "http://localhost:5173",
-            "http://localhost:8000",
-            "http://localhost:8080",
-            "https://*.vercel.app",
-            "https://flash-cart.vercel.app"
-        ));
+        String env = System.getenv("CORS_ALLOWED_ORIGINS");
+        List<String> origins;
+        if (env != null && !env.isBlank()) {
+            origins = Arrays.asList(env.split(","));
+        } else {
+            origins = Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:8000",
+                "http://localhost:8080"
+            );
+        }
+        configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

@@ -3,8 +3,8 @@
  * JWT Authentication, Categories, Split Types, Settlement Recording
  */
 
-// Set your production backend URL here once you deploy the Spring Boot app (e.g., to Railway or Render)
-const PROD_BACKEND_URL = 'https://your-backend-app.up.railway.app'; 
+// Set your production backend URL here once you deploy the Spring Boot app
+const PROD_BACKEND_URL = 'https://flashcart-backend.onrender.com'; 
 
 const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8080/api'
