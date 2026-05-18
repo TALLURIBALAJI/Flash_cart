@@ -56,27 +56,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        String env = System.getenv("CORS_ALLOWED_ORIGINS");
-        List<String> origins;
-        if (env != null && !env.isBlank()) {
-            origins = Arrays.asList(env.split(","));
-        } else {
-            origins = Arrays.asList(
-                "http://localhost:3000",
-                "http://localhost:5173",
-                "http://localhost:8000",
-                "http://localhost:8080",
-                "https://flashcart-frontend.onrender.com"
-            );
-        }
-        configuration.setAllowedOrigins(origins);
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
