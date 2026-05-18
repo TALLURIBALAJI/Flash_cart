@@ -1,16 +1,14 @@
 # Multi-stage Dockerfile for Flash-Cart backend
-# Builder stage: build the jar with Maven (uses mvnw if present)
-FROM eclipse-temurin:21-jdk AS builder
+# Builder stage: build the jar with Maven
+FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /workspace
 
-# Copy Maven wrapper and project files
-COPY mvnw .
-COPY .mvn .mvn
+# Copy project files
 COPY pom.xml .
 COPY src src
 
-# Make mvnw executable and build
-RUN chmod +x mvnw && ./mvnw -DskipTests package -B
+# Build with Maven
+RUN mvn -DskipTests package -B
 
 # Runtime stage
 FROM eclipse-temurin:21-jre
