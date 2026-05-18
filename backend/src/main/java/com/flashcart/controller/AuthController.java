@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * Auth Controller - JWT-based authentication endpoints (public)
  */
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173", "http://localhost:8000", "https://flashcart-frontend.onrender.com"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
