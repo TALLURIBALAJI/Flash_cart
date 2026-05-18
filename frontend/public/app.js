@@ -4,7 +4,7 @@
  */
 
 // Set your production backend URL here once you deploy the Spring Boot app
-const PROD_BACKEND_URL = 'https://flashcart-backend.onrender.com'; 
+const PROD_BACKEND_URL = 'https://flash-cart.onrender.com'; 
 
 const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8080/api'
